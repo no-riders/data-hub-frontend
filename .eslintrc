@@ -1,8 +1,12 @@
 {
   "extends": "standard",
   "parser": "babel-eslint",
+  "env": {
+    "jest/globals": true
+  },
   "plugins": [
-    "mocha"
+    "mocha",
+    "jest"
   ],
   "rules": {
     "comma-dangle": [
