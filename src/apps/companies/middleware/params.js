@@ -1,5 +1,6 @@
 const { getFormattedAddress } = require('../../../lib/address')
 const { getDitCompany, getCHCompany } = require('../repos')
+const { isValidGuid } = require('../../../lib/controller-utils')
 
 // TODO: Use transformer to return correct address object and handle display
 // in view layer
@@ -17,9 +18,13 @@ function getHeadingAddress (company) {
   return getFormattedAddress(company, 'registered')
 }
 
-async function getCompany (req, res, next, id) {
+async function getCompany (req, res, next, companyId) {
+  if (!isValidGuid(companyId)) {
+    return next()
+  }
+
   try {
-    const company = await getDitCompany(req.session.token, id)
+    const company = await getDitCompany(req.session.token, companyId)
 
     company.address = getHeadingAddress(company)
 
