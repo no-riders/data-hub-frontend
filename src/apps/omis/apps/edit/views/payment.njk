@@ -1,0 +1,28 @@
+{% extends "_layouts/form-wizard-step.njk" %}
+
+{% block fields %}
+  {{ super() }}
+  {# {{order|dump}} #}
+  <div class="c-form-group">
+    <p class="c-form-group__label">
+      <span class="c-form-group__label-text">
+        Billing address
+      </span>
+    </p>
+
+    <p>
+      {{ [
+        order.billing_contact_name,
+        order.billing_email,
+        order.billing_phone,
+        order.billing_address_1,
+        order.billing_address_2,
+        order.billing_address_town,
+        order.billing_address_county,
+        order.billing_address_postcode,
+        order.billing_address_country
+      ] | removeNilAndEmpty | join(", ") }}
+      {{ order.billing_contact_name }}
+    </p>
+  </div>
+{% endblock %}

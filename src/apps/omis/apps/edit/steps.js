@@ -51,6 +51,19 @@ const steps = merge({}, createSteps, {
       'vat_verified',
       'po_number',
     ],
+    templatePath: 'omis/apps/edit/views',
+    template: 'payment.njk',
+  },
+  '/billing-address': {
+    heading: 'Edit billing address',
+    fields: [
+      'billing_address_1',
+      'billing_address_2',
+      'billing_address_town',
+      'billing_address_county',
+      'billing_address_postcode',
+      'billing_address_country',
+    ],
   },
 })
 
