@@ -1,9 +1,20 @@
 const router = require('express').Router()
 
 const { setDefaultQuery } = require('../middleware')
-const { getInteractionsCollection, getRequestBody, getDetails } = require('./middleware')
+
+const {
+  getInteractionsCollection,
+  getRequestBody,
+  getDetails,
+} = require('./middleware')
 const { postDetails } = require('./middleware/details')
-const { renderCreatePage, postAddStep1, renderDetailsPage } = require('./controllers/details')
+
+const {
+  renderCreatePage,
+  postAddStep1,
+  renderDetailsPage,
+} = require('./controllers/details')
+
 const { renderEditPage } = require('./controllers/edit')
 const { renderInteractionList } = require('./controllers/list')
 
@@ -13,7 +24,12 @@ const DEFAULT_COLLECTION_QUERY = {
 
 router.param('interactionId', getDetails)
 
-router.get('/', setDefaultQuery(DEFAULT_COLLECTION_QUERY), getRequestBody, getInteractionsCollection, renderInteractionList)
+router.get('/',
+  setDefaultQuery(DEFAULT_COLLECTION_QUERY),
+  getRequestBody,
+  getInteractionsCollection,
+  renderInteractionList
+)
 
 router
   .route(/^\/create(\/1)?$/)

@@ -1,6 +1,6 @@
 {% extends "_layouts/two-column.njk" %}
 
 {% block main_grid_right_column %}
-  {{ keyvaluetable(interactionDetails, stripey=true, labels=interactionLabels, keyorder=interactionDisplayOrder) }}
+   {% component 'key-value-table', variant='striped', items=interactionViewRecord %}
   <a class="button button-secondary" href="{{interaction.id}}/edit">Edit interaction</a>
 {% endblock %}

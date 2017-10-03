@@ -1,22 +1,13 @@
 const { sortBy, pick, omit } = require('lodash')
 const queryString = require('query-string')
 
-const interactionLabels = require('../labels')
 const metadataRepository = require('../../../lib/metadata')
-const { getDisplayInteraction } = require('../services/formatting')
-const { transformObjectToOption } = require('../../transformers')
 
-const interactonDisplayOrder = [
-  'company',
-  'interaction_type',
-  'subject',
-  'notes',
-  'contact',
-  'date',
-  'dit_adviser',
-  'service',
-  'dit_team',
-]
+const { transformObjectToOption } = require('../../transformers')
+const {
+  transformInteractionResponsetoViewRecord,
+  transformServiceDeliveryResponsetoViewRecord,
+} = require('../transformers')
 
 function renderCreatePage (req, res) {
   const interactionTypes = [...metadataRepository.interactionTypeOptions, { id: 999, name: 'Service delivery' }]
@@ -52,13 +43,35 @@ function postAddStep1 (req, res, next) {
   return res.redirect(`/interactions/create/2?${interactionQueryString}`)
 }
 
-function renderDetailsPage (req, res, next) {
+function renderDetailsPage (req, res) {
+  if (res.locals.interaction.kind === 'service_delivery') {
+    return renderServiceDeliveryPage(req, res)
+  }
+
+  return renderInteractionPage(req, res)
+}
+
+function renderServiceDeliveryPage (req, res) {
+  const { interaction } = res.locals
+  const breadcrumb = 'Service delivery'
+  const interactionViewRecord = transformServiceDeliveryResponsetoViewRecord(interaction)
+
   res
-    .breadcrumb(`Interaction with ${res.locals.interaction.company.name}`)
+    .breadcrumb(breadcrumb)
     .render('interactions/views/details', {
-      interactionDetails: getDisplayInteraction(res.locals.interaction),
-      interactionLabels: interactionLabels,
-      interactionDisplayOrder: interactonDisplayOrder,
+      interactionViewRecord,
+    })
+}
+
+function renderInteractionPage (req, res) {
+  const { interaction } = res.locals
+  const breadcrumb = 'Interaction'
+  const interactionViewRecord = transformInteractionResponsetoViewRecord(interaction)
+
+  res
+    .breadcrumb(breadcrumb)
+    .render('interactions/views/details', {
+      interactionViewRecord,
     })
 }
 

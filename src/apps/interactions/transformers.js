@@ -72,6 +72,90 @@ function transformInteractionToListItem ({
   }
 }
 
+function transformInteractionResponsetoViewRecord ({
+  company,
+  interaction_type,
+  subject,
+  notes,
+  date,
+  dit_adviser,
+  service,
+  dit_team,
+  contact,
+}) {
+  const contactLink = contact ? {
+    url: `/contacts/${contact.id}`,
+    name: contact.name,
+  } : null
+
+  const companyLink = company ? {
+    url: `/companies/${company.id}`,
+    name: company.name,
+  } : null
+
+  return {
+    'Company': companyLink,
+    'Type': interaction_type,
+    'Subject': subject,
+    'Notes': notes,
+    'Date': {
+      type: 'date',
+      name: date,
+    },
+    'Adviser': dit_adviser,
+    'Service': service,
+    'Team': dit_team,
+    'Contact': contactLink,
+  }
+}
+
+function transformServiceDeliveryResponsetoViewRecord ({
+  company,
+  interaction_type,
+  subject,
+  notes,
+  date,
+  dit_adviser,
+  service,
+  dit_team,
+  contact,
+  event,
+  status,
+  uk_region,
+  sector,
+  country_of_interest,
+}) {
+  const contactLink = contact ? {
+    url: `/contacts/${contact.id}`,
+    name: contact.name,
+  } : null
+
+  const companyLink = company ? {
+    url: `/companies/${company.id}`,
+    name: company.name,
+  } : null
+
+  const eventLink = event ? {
+    url: `/events/${event.id}`,
+    name: event.subject,
+  } : 'No'
+
+  return {
+    'Company': companyLink,
+    'Contact': contactLink,
+    'Service provider': dit_team,
+    'Event': eventLink,
+    'Service': service,
+    'Subject': subject,
+    'Notes': notes,
+    'Date': {
+      type: 'date',
+      name: date,
+    },
+    'Adviser': dit_adviser,
+  }
+}
+
 function transformInteractionFormBodyToApiRequest ({ props, company, communicationChannel }) {
   return assign({}, props, {
     date: transformDateObjectToDateString('date')(props),
@@ -84,4 +168,6 @@ module.exports = {
   transformInteractionResponseToForm,
   transformInteractionToListItem,
   transformInteractionFormBodyToApiRequest,
+  transformInteractionResponsetoViewRecord,
+  transformServiceDeliveryResponsetoViewRecord,
 }
